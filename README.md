@@ -13,6 +13,19 @@ It contains a series of other popular computer vision datasets, namely MNIST, QM
 ### Models
 They are two-layer fully connected MLP, LeNet , AlexNet, VGG, Inception-v3, ResNet, WideResNet and MobileNet-v3.
 
+### Quick Demo
+
+To quickly demonstrate the library's functionality with synthetic data (useful when datasets are not available):
+
+```sh
+python demo.py
+```
+
+This will:
+1. Create a synthetic dataset mimicking CIFAR10 structure
+2. Run experiments with different models (ResNet18, MLP)
+3. Generate training curves and accuracy comparison plots in `./result/`
+
 ### Example
 Selecting with Glister and training on the coreset with fraction 0.1.
 ```sh
