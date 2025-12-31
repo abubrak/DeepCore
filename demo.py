@@ -9,8 +9,8 @@ Usage:
     python demo.py
 
 The script demonstrates:
-1. Different coreset selection methods (Uniform, kCenterGreedy, etc.)
-2. Network architectures (ResNet18, MLP, LeNet, VGG11)
+1. Uniform coreset selection method
+2. Network architectures (ResNet18, MLP)
 3. Training on a coreset subset
 4. Evaluation and results visualization
 """
@@ -41,8 +41,10 @@ class SyntheticDataset(torch.utils.data.Dataset):
         self.channels = channels
         self.train = train
         
-        # Generate random data with some structure
-        rng = np.random.RandomState(seed if seed else (42 if train else 43))
+        # Generate random data with some structure using a fixed seed for reproducibility
+        seed_value = seed if seed else (42 if train else 43)
+        torch.manual_seed(seed_value)
+        np.random.seed(seed_value)
         
         # Create data with class-dependent features for more realistic training
         self.data = torch.zeros(num_samples, channels, *im_size)
@@ -197,7 +199,8 @@ def plot_results(results, save_path='./result'):
     bars = ax.bar(methods_labels, accuracies, color='steelblue', edgecolor='black')
     ax.set_ylabel('Test Accuracy (%)')
     ax.set_title('Final Test Accuracy Comparison')
-    ax.set_ylim(0, max(accuracies) * 1.2 if accuracies else 100)
+    # Cap y-axis at 100% for accuracy plots
+    ax.set_ylim(0, min(100, max(accuracies) * 1.2) if accuracies else 100)
     
     # Add value labels on bars
     for bar, acc in zip(bars, accuracies):
